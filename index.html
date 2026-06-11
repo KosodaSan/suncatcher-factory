@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>サンキャッチャー工房 β3</title>
+<style>
+:root{--ink:#51475f;--muted:#8d82a1;--line:rgba(105,88,140,.18);--card:rgba(255,255,255,.78);--card2:rgba(255,255,255,.55);--accent:#9d8be0;--accent2:#7fc9df;--pink:#f3adc8;--shadow:0 18px 48px rgba(76,54,118,.15)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",system-ui,sans-serif;background:radial-gradient(circle at 20% 12%,rgba(155,213,255,.55),transparent 34%),radial-gradient(circle at 82% 18%,rgba(255,193,224,.55),transparent 31%),linear-gradient(145deg,#f7f1ff,#fff8fb);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.20;z-index:-1;background-image:linear-gradient(60deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%),linear-gradient(120deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%);background-size:58px 58px}
+.wrap{max-width:1060px;margin:0 auto;padding:16px 14px 100px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0 12px}
+h1{font-size:23px;margin:0}.sub{font-size:12px;color:var(--muted);line-height:1.55;margin-top:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);backdrop-filter:blur(14px);padding:16px;margin:12px 0}
+h2{font-size:17px;margin:0 0 10px}.small{font-size:12px;color:var(--muted);line-height:1.65}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}@media(min-width:880px){.grid{grid-template-columns:1.14fr .86fr}}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--card2);border:1px solid var(--line);border-radius:17px;padding:12px;min-height:80px}
+.label{font-size:12px;color:var(--muted)}.num{font-variant-numeric:tabular-nums;font-size:22px;font-weight:850;margin-top:4px}
+button{appearance:none;border:0;border-radius:16px;padding:12px 14px;color:white;background:linear-gradient(135deg,var(--accent2),var(--accent) 56%,var(--pink));font-weight:850;font-size:14px;box-shadow:0 9px 20px rgba(123,91,190,.22);cursor:pointer;touch-action:manipulation}
+button:disabled{opacity:.42;filter:grayscale(.25);box-shadow:none;cursor:not-allowed}
+button.secondary{color:var(--ink);background:rgba(255,255,255,.7);border:1px solid var(--line);box-shadow:none}
+button.danger{background:linear-gradient(135deg,#c96988,#eda6ba)}
+.bigbtn{width:100%;min-height:94px;border-radius:25px;font-size:20px;position:relative;overflow:hidden}
+.badge{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:rgba(255,255,255,.55);border-radius:999px;padding:7px 10px;font-size:12px;color:var(--muted)}
+.progress{height:11px;background:rgba(128,111,157,.12);border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#a9d9ff,#d7b4ff,#ffc7dd);transition:.2s}
+.scene{position:relative;min-height:330px;overflow:hidden;border-radius:24px;background:radial-gradient(circle at 25% 25%,rgba(255,255,255,.95),transparent 14%),radial-gradient(circle at 55% 28%,rgba(164,224,255,.65),transparent 25%),radial-gradient(circle at 73% 61%,rgba(255,199,226,.64),transparent 27%),linear-gradient(145deg,#f4edff,#fff9fc);border:1px solid var(--line)}
+.sun{position:absolute;right:28px;top:24px;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle,#fff7ba,#ffc863 60%,transparent 70%);box-shadow:0 0 38px rgba(255,202,94,.65)}
+.ray{position:absolute;right:46px;top:58px;width:560px;height:2px;transform:rotate(138deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.96),rgba(152,220,255,.7),transparent);opacity:.8}
+.hanger{position:absolute;left:50%;top:20px;width:2px;height:112px;background:rgba(132,116,160,.3)}
+.crystal{position:absolute;left:50%;top:126px;transform:translateX(-50%);width:104px;height:132px;clip-path:polygon(50% 0,86% 20%,72% 82%,50% 100%,28% 82%,14% 20%);background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(149,222,255,.55),rgba(255,183,222,.55),rgba(255,255,255,.82));border:1px solid rgba(255,255,255,.78);box-shadow:0 24px 50px rgba(113,93,156,.2),inset 0 0 30px rgba(255,255,255,.8)}
+.crystal:after{content:"";position:absolute;inset:-20%;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.95) 46%,transparent 58%);transform:translateX(var(--shineX,-35%));opacity:.65}
+.prism{position:absolute;width:60px;height:10px;border-radius:999px;opacity:.82;filter:blur(.2px);background:linear-gradient(90deg,#ff95bd,#ffd86d,#a5edc7,#8dd6ff,#b7a1ff)}
+.p1{left:16%;top:64%;transform:rotate(-12deg)}.p2{left:56%;top:72%;transform:rotate(8deg)}.p3{left:31%;top:82%;transform:rotate(5deg);width:98px}
+.fairy{position:absolute;font-size:25px;animation:float 4.5s ease-in-out infinite;filter:drop-shadow(0 8px 14px rgba(95,70,130,.2))}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.sceneItem{position:absolute;font-size:34px;text-shadow:0 10px 20px rgba(85,60,125,.18);cursor:pointer}
+.shopitem,.makeitem{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:17px;background:rgba(255,255,255,.52);margin:8px 0}
+.name{font-weight:850}.price{font-size:12px;color:var(--muted);line-height:1.55;margin-top:4px}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;gap:3px;padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.84);border-top:1px solid var(--line);backdrop-filter:blur(18px)}
+.tabs button{box-shadow:none;background:transparent;color:var(--muted);border-radius:15px;padding:10px 7px;flex:1;max-width:122px;font-size:12px}.tabs button.active{background:#f0eafd;color:var(--accent)}
+.page{display:none}.page.active{display:block}
+.collectionGrid{display:grid;grid-template-columns:1fr;gap:10px}@media(min-width:700px){.collectionGrid{grid-template-columns:1fr 1fr}}
+.collectcard{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.56);padding:12px}
+.art{height:130px;border-radius:17px;border:1px solid var(--line);background:radial-gradient(circle at 70% 20%,rgba(255,255,255,.92),transparent 18%),radial-gradient(circle at 28% 42%,rgba(170,226,255,.4),transparent 28%),linear-gradient(135deg,#f7f0ff,#fff7fb);display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:9px;overflow:hidden}
+.locked{filter:grayscale(1);opacity:.48}.rarity{font-size:11px;border-radius:999px;padding:4px 8px;border:1px solid var(--line);display:inline-block;margin-top:4px}
+.showroom{min-height:360px;border-radius:24px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.2)),radial-gradient(circle at 25% 12%,rgba(255,255,255,.9),transparent 15%),linear-gradient(145deg,#f5efff,#fff8fb);position:relative;overflow:hidden}
+.window{position:absolute;left:22px;top:24px;right:22px;height:88px;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(210,235,255,.45));border:1px solid rgba(255,255,255,.65)}
+.shelf{position:absolute;left:24px;right:24px;height:10px;border-radius:999px;background:rgba(126,103,150,.16)}.shelf.s1{top:178px}.shelf.s2{top:270px}
+.displayItem{position:absolute;font-size:36px;text-shadow:0 10px 24px rgba(92,70,132,.18);cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(35,25,48,.45);display:none;align-items:center;justify-content:center;z-index:80;padding:18px}.modal.show{display:flex}
+.modalBox{max-width:430px;width:100%;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:26px;padding:16px;box-shadow:var(--shadow)}
+.gemPreview{height:260px;border-radius:22px;background:radial-gradient(circle at 25% 20%,rgba(255,255,255,.95),transparent 18%),linear-gradient(135deg,#f5efff,#fff8fb);display:flex;align-items:center;justify-content:center;font-size:92px;position:relative;overflow:hidden}
+.gemPreview:after{content:"";position:absolute;inset:-30%;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.96),transparent 58%);transform:translateX(var(--shineX,-40%));opacity:.75}
+textarea{width:100%;min-height:120px;border-radius:15px;border:1px solid var(--line);padding:10px;background:rgba(255,255,255,.7);color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(18px);background:rgba(75,61,92,.94);color:white;border-radius:999px;padding:10px 14px;opacity:0;transition:.23s;z-index:90;font-size:13px;max-width:calc(100% - 28px);text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.spark{position:fixed;pointer-events:none;z-index:60;font-weight:900;color:#8e7ad5;animation:floatup .72s ease-out forwards}@keyframes floatup{to{transform:translateY(-42px);opacity:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div><h1>🌙 サンキャッチャー工房</h1><div class="sub">妖精と光を集めて、ランダム制作で図鑑を埋めるβ3です。</div></div><button class="secondary" id="quickSaveBtn">💾保存</button></header>
+<section id="home" class="page active"><div class="grid"><div><div class="card scene" id="scene"><div class="sun"></div><div class="ray"></div><div class="hanger"></div><div class="crystal"></div><div class="prism p1"></div><div class="prism p2"></div><div class="prism p3"></div></div><div class="card"><div class="stats"><div class="stat"><div class="label">💎 ガラス欠片</div><div class="num" id="glass">0</div></div><div class="stat"><div class="label">💎/秒</div><div class="num" id="gps">0</div></div><div class="stat"><div class="label">🌙 月光</div><div class="num" id="moon">0</div></div><div class="stat"><div class="label">📖 図鑑</div><div class="num"><span id="collected">0</span>/<span id="totalcol">0</span></div></div></div><p class="small" id="bonusText"></p><button class="bigbtn" id="clickBtn">💎 ガラスを拾う</button></div></div><div><div class="card"><h2>次の目標</h2><div class="badge" id="goalText">読み込み中</div><div style="height:10px"></div><div class="progress"><div class="bar" id="goalBar"></div></div><div class="small" id="goalHint" style="margin-top:8px"></div></div><div class="card"><h2>妖精アップグレード</h2><div id="shop"></div></div></div></div></section>
+<section id="craft" class="page"><div class="card"><h2>🌈 ランダム制作</h2><p class="small">選んで作るのではなく、ランクごとにランダム制作します。未所持が出やすめ。制作したサンキャッチャーは能力を解放します。</p><div id="craftList"></div></div></section>
+<section id="collection" class="page"><div class="card"><h2>📖 図鑑</h2><p class="small">好きそうなモチーフだけに寄せた図鑑。タップすると詳細を見られます。</p><div class="collectionGrid" id="collectionGrid"></div></div></section>
+<section id="showroom" class="page"><div class="card"><h2>🪟 展示室</h2><p class="small">制作したサンキャッチャーが飾られます。タップで詳細。</p><div class="showroom" id="showroomBox"><div class="window"></div><div class="shelf s1"></div><div class="shelf s2"></div></div></div></section>
+<section id="settings" class="page"><div class="card"><h2>⚙️ 設定・デバッグ</h2><div class="row"><button class="secondary" id="saveBtn">保存</button><button class="secondary" id="motionBtn">傾きキラキラ許可</button><button class="secondary" id="debugBtn">デバッグ情報</button><button class="danger" id="resetBtn">初期化</button></div><p class="small">β3確認：ランダム制作の楽しさ、妖精名の好み、ホームが見ていて楽しいか、保存が安定するか。</p><textarea id="debugBox"></textarea></div></section>
+</div>
+<div class="tabs"><button id="tab-home" class="active" data-page="home">💎 工房</button><button id="tab-craft" data-page="craft">🌈 制作</button><button id="tab-collection" data-page="collection">📖 図鑑</button><button id="tab-showroom" data-page="showroom">🪟 展示</button><button id="tab-settings" data-page="settings">⚙️</button></div>
+<div class="modal" id="modal"><div class="modalBox"><div class="gemPreview" id="modalIcon"></div><h2 id="modalName"></h2><div class="badge" id="modalRarity"></div><p class="small" id="modalText"></p><p class="small" id="modalAbility"></p><button class="secondary" id="closeModal">閉じる</button></div></div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+const KEY="suncatcher_factory_beta_3";
+const ranks=[{id:"common",name:"Common",costG:50,costM:0,unlock:0},{id:"rare",name:"Rare",costG:180,costM:5,unlock:8},{id:"sr",name:"SR",costG:700,costM:25,unlock:18},{id:"ssr",name:"SSR",costG:2600,costM:120,unlock:30},{id:"ur",name:"UR",costG:9000,costM:450,unlock:42}];
+const fairies=[{id:"spark",name:"🧚 光の妖精",base:15,mult:1.18,gps:.25,desc:"小さな光を拾ってくる。"},{id:"dew",name:"💧 朝露の妖精",base:120,mult:1.20,gps:1.5,desc:"透明な欠片を見つけるのが上手。"},{id:"rainbow",name:"🌈 虹の妖精",base:850,mult:1.22,gps:8,desc:"プリズムの光を集める。"},{id:"moon",name:"🌙 月光の精霊",base:5200,mult:1.24,gps:38,moonps:.08,desc:"月光を少しずつ注ぐ。"},{id:"butterfly",name:"🦋 水晶蝶",base:33000,mult:1.26,gps:230,moonps:.35,desc:"羽ばたくたびに光が増える。"},{id:"aurora",name:"🫧 オーロラの精霊",base:220000,mult:1.28,gps:1600,moonps:1.6,desc:"淡い極光を運んでくる。"},{id:"star",name:"✨ 星読みの精霊",base:1500000,mult:1.30,gps:9500,moonps:7,desc:"星の光を工房へ導く。"},{id:"orbit",name:"🪐 光の衛星",base:9500000,mult:1.32,gps:62000,moonps:35,desc:"もはや工房の外から支援する。"}];
+const items=[
+{id:"dewdrop",rank:"common",icon:"💧",name:"朝露の雫",text:"夜明け前の庭で見つかる、小さな光を閉じ込めた雫。",ability:"クリック獲得 +1",bonus:{click:1}},
+{id:"moonchip",rank:"common",icon:"🌙",name:"月の欠片",text:"薄い月色の小さな欠片。夜の窓辺に似合う。",ability:"月光生成 +3%",bonus:{moonMult:.03}},
+{id:"ripple",rank:"common",icon:"🫧",name:"水面のさざ波",text:"水面の揺れをそのまま固めたような透明な飾り。",ability:"クリック演出 +1",bonus:{spark:1}},
+{id:"seed",rank:"common",icon:"✨",name:"光の種",text:"小さな光を内側に抱いた種の形。",ability:"ガラス生成 +3%",bonus:{gpsMult:.03}},
+{id:"whitefeather",rank:"common",icon:"🪽",name:"白羽の標本",text:"羽の形をした薄いガラス。影まで綺麗。",ability:"クリック獲得 +1",bonus:{click:1}},
+{id:"tinyrainbow",rank:"common",icon:"🌈",name:"小さな虹",text:"本当に小さいけれど、角度でちゃんと虹が出る。",ability:"ガラス生成 +4%",bonus:{gpsMult:.04}},
+{id:"iceDrop",rank:"common",icon:"❄️",name:"氷の雫",text:"冷たい朝の窓に似た、淡い氷色の雫。",ability:"放置上限 +15分",bonus:{offline:900}},
+{id:"lampDrop",rank:"common",icon:"🕯️",name:"灯りのしずく",text:"キャンドルの火を柔らかく映す小さな硝子。",ability:"クリック獲得 +1",bonus:{click:1}},
+{id:"afterRain",rank:"common",icon:"🍃",name:"雨上がり",text:"葉先の水滴みたいな、静かな緑の光。",ability:"月光生成 +2%",bonus:{moonMult:.02}},
+{id:"teaTime",rank:"common",icon:"🫖",name:"午後の紅茶",text:"紅茶色の光が少しだけ透ける、落ち着いた飾り。",ability:"ガラス生成 +5%",bonus:{gpsMult:.05}},
+{id:"windowLight",rank:"common",icon:"🪟",name:"窓辺の光",text:"部屋の白い壁に、細い光を落とす。",ability:"クリック獲得 +1",bonus:{click:1}},
+{id:"silverRain",rank:"common",icon:"☔",name:"銀の雨粒",text:"雨の日だけ少し明るく見える粒。",ability:"月光 +2%",bonus:{moonMult:.02}},
+{id:"auroraRibbon",rank:"rare",icon:"🎀",name:"オーロラリボン",text:"角度で色がほどけるリボン型のサンキャッチャー。",ability:"クリック時20%で2倍",bonus:{doubleChance:.2}},
+{id:"crystalButterfly",rank:"rare",icon:"🦋",name:"水晶蝶",text:"羽が透明で、影だけが虹色になる。",ability:"ガラス生成 +12%",bonus:{gpsMult:.12}},
+{id:"mistBottle",rank:"rare",icon:"🧴",name:"霧の小瓶",text:"朝霧を閉じ込めたような、白く淡い小瓶。",ability:"月光生成 +8%",bonus:{moonMult:.08}},
+{id:"snowWindow",rank:"rare",icon:"❄️",name:"雪明かりの窓",text:"雪の日の部屋の明るさを思わせる飾り。",ability:"放置上限 +30分",bonus:{offline:1800}},
+{id:"glassLily",rank:"rare",icon:"🤍",name:"硝子のすずらん",text:"小さな花が鈴みたいに連なって揺れる。",ability:"クリック獲得 +3",bonus:{click:3}},
+{id:"blueHour",rank:"rare",icon:"🌌",name:"青い時間",text:"夕方と夜の間の色を宿した硝子。",ability:"月光生成 +10%",bonus:{moonMult:.10}},
+{id:"sunTea",rank:"rare",icon:"☕",name:"陽だまりの紅茶",text:"紅茶と窓辺の光を合わせたような暖かい色。",ability:"ガラス生成 +10%",bonus:{gpsMult:.10}},
+{id:"waterMirror",rank:"rare",icon:"💠",name:"水鏡",text:"揺れていない水面のように澄んでいる。",ability:"クリック獲得 +2",bonus:{click:2}},
+{id:"moonGarden",rank:"sr",icon:"🪷",name:"月光庭園",text:"月明かりだけで咲く花々を映した作品。",ability:"月光生成 +20%",bonus:{moonMult:.20}},
+{id:"crystalDrape",rank:"sr",icon:"📿",name:"水晶のドレープ",text:"光の粒をカーテンみたいに落とす。",ability:"ガラス生成 +25%",bonus:{gpsMult:.25}},
+{id:"opalWing",rank:"sr",icon:"🪽",name:"オパールの羽",text:"白い羽の中に淡い虹が沈んでいる。",ability:"クリック獲得 +6",bonus:{click:6}},
+{id:"candleGlass",rank:"sr",icon:"🕯️",name:"キャンドルグラス",text:"火のそばで柔らかく光る、夜用の作品。",ability:"クリック時30%で2倍",bonus:{doubleChance:.3}},
+{id:"starWindow",rank:"sr",icon:"⭐",name:"星降る窓辺",text:"壁に小さな星の影を作る。",ability:"放置収入 +20%",bonus:{gpsMult:.20}},
+{id:"whiteGreenhouse",rank:"ssr",icon:"🏛️",name:"白夜の温室",text:"眠らない淡い光の温室。植物まで透けて見える。",ability:"月光生成 +40%",bonus:{moonMult:.40}},
+{id:"nebulaGlass",rank:"ssr",icon:"🌌",name:"星雲硝子",text:"宇宙っぽい色が内側でゆっくり混ざる。",ability:"ガラス生成 +55%",bonus:{gpsMult:.55}},
+{id:"rainbowChapel",rank:"ssr",icon:"💒",name:"虹の小聖堂",text:"小さな礼拝堂みたいな形の光の飾り。",ability:"クリック獲得 +15",bonus:{click:15}},
+{id:"moonTear",rank:"ssr",icon:"💧",name:"月の涙",text:"青白く光る、大きな雫型のサンキャッチャー。",ability:"月光生成 +35%",bonus:{moonMult:.35}},
+{id:"sunTower",rank:"ur",icon:"☀️",name:"日輪の塔",text:"工房が作れる最大級の光の塔。",ability:"全生産 +100%",bonus:{gpsMult:1,moonMult:1}},
+{id:"galaxyReflector",rank:"ur",icon:"✨",name:"銀河反射装置",text:"もうサンキャッチャーなのか装置なのか怪しい。",ability:"クリック獲得 +50",bonus:{click:50}}
+];
+let state=defaultState();function defaultState(){const f={};fairies.forEach(x=>f[x.id]=0);return{glass:0,moon:0,clicks:0,fairies:f,made:{},last:Date.now(),motion:false};}
+const $=id=>document.getElementById(id);function fmt(n){n=Math.floor(Number(n)||0);if(n<10000)return n.toLocaleString("ja-JP");const u=["万","億","兆","京","垓"];let v=n,i=-1;while(v>=10000&&i<u.length-1){v/=10000;i++;}return v.toFixed(v<10?2:v<100?1:0)+u[i];}
+function bonuses(){const b={click:0,gpsMult:0,moonMult:0,doubleChance:0,offline:0,spark:0};Object.keys(state.made).forEach(id=>{const it=items.find(x=>x.id===id);if(it&&it.bonus)Object.keys(it.bonus).forEach(k=>b[k]=(b[k]||0)+it.bonus[k]);});return b;}
+function baseGps(){return fairies.reduce((s,f)=>s+(state.fairies[f.id]||0)*(f.gps||0),0)}function baseMoonps(){return fairies.reduce((s,f)=>s+(state.fairies[f.id]||0)*(f.moonps||0),0)}
+function gps(){return baseGps()*(1+bonuses().gpsMult)}function moonps(){return baseMoonps()*(1+bonuses().moonMult)}function clickPower(){return 1+bonuses().click+Math.floor(Object.keys(state.made).length/8)}
+function fairyCost(f){return Math.floor(f.base*Math.pow(f.mult,state.fairies[f.id]||0))}function rankItems(rank){return items.filter(x=>x.rank===rank)}function madeCount(rank){return rankItems(rank).filter(x=>state.made[x.id]).length}function rankUnlocked(r){return Object.keys(state.made).length>=r.unlock}
+function collectGlass(e){let gain=clickPower();const b=bonuses();if(Math.random()<b.doubleChance)gain*=2;state.glass+=gain;state.clicks++;if(e&&e.clientX){for(let i=0;i<1+(b.spark||0);i++)spark("+"+gain,e.clientX+(Math.random()*40-20),e.clientY+(Math.random()*20-10));}render();}
+function buyFairy(id){const f=fairies.find(x=>x.id===id),c=fairyCost(f);if(state.glass>=c){state.glass-=c;state.fairies[id]=(state.fairies[id]||0)+1;toast(f.name+" が来ました");render();save();}}
+function craftRank(rankId){const r=ranks.find(x=>x.id===rankId);if(!rankUnlocked(r))return toast("まだ解放されていません");if(state.glass<r.costG||state.moon<r.costM)return;state.glass-=r.costG;state.moon-=r.costM;const pool=rankItems(rankId);let candidates=pool.filter(x=>!state.made[x.id]);if(!candidates.length)candidates=pool;const it=candidates[Math.floor(Math.random()*candidates.length)];const dup=!!state.made[it.id];if(dup){state.glass+=Math.floor(r.costG*.35);toast("重複："+it.icon+" "+it.name+" → 欠片に還元");}else{state.made[it.id]=Date.now();toast("完成："+it.icon+" "+it.name);openModal(it.id);}render();save();}
+function tick(){const now=Date.now(),dt=Math.min(2,Math.max(0,(now-state.last)/1000));state.last=now;state.glass+=gps()*dt;state.moon+=moonps()*dt;render(false);}
+function save(){state.last=Date.now();localStorage.setItem(KEY,JSON.stringify(state));}
+function load(){const raw=localStorage.getItem(KEY);if(!raw)return;try{const old=JSON.parse(raw);state=defaultState();Object.assign(state,old);state.fairies=Object.assign(defaultState().fairies,old.fairies||old.upgrades||{});state.made=old.made||{};const max=8*3600+bonuses().offline;const elapsed=Math.min(max,Math.max(0,(Date.now()-(old.last||Date.now()))/1000));const addG=gps()*elapsed,addM=moonps()*elapsed;state.glass+=addG;state.moon+=addM;state.last=Date.now();if(elapsed>60)setTimeout(()=>toast("留守中に 💎"+fmt(addG)+" / 🌙"+fmt(addM)+" 集まりました"),600);}catch(e){console.warn(e);}}
+function render(full=true){$("glass").textContent=fmt(state.glass);$("moon").textContent=fmt(state.moon);$("gps").textContent=fmt(gps());$("collected").textContent=Object.keys(state.made).length;$("totalcol").textContent=items.length;const b=bonuses();$("bonusText").textContent="クリック +"+clickPower()+" / ガラス生産 +"+Math.round(b.gpsMult*100)+"% / 月光 +"+Math.round(b.moonMult*100)+"%";renderGoal();if(full){renderShop();renderCraft();renderCollection();renderShowroom();renderScene();}else updateButtons();}
+function renderGoal(){const r=ranks.find(x=>rankUnlocked(x)&&madeCount(x.id)<rankItems(x.id).length)||ranks.find(x=>!rankUnlocked(x));if(!r){$("goalText").textContent="β3図鑑コンプリート";$("goalHint").textContent="次で種類を増やします。";$("goalBar").style.width="100%";return;}$("goalText").textContent=r.name+"制作 "+madeCount(r.id)+"/"+rankItems(r.id).length;$("goalHint").textContent=rankUnlocked(r)?"必要：💎"+fmt(r.costG)+(r.costM?" / 🌙"+fmt(r.costM):""):"解放条件：図鑑 "+r.unlock+" 種";let p=rankUnlocked(r)?Math.min(state.glass/r.costG,r.costM?state.moon/r.costM:1)*100:(Object.keys(state.made).length/r.unlock)*100;$("goalBar").style.width=Math.max(2,Math.min(100,p))+"%";}
+function renderShop(){const el=$("shop");el.innerHTML="";fairies.forEach(f=>{const c=fairyCost(f),lv=state.fairies[f.id]||0;const div=document.createElement("div");div.className="shopitem";div.innerHTML='<div><div class="name">'+f.name+' <span class="label">Lv.'+lv+'</span></div><div class="price">'+f.desc+'<br>価格：💎'+fmt(c)+' / +'+f.gps+'/秒'+(f.moonps?'・🌙+'+f.moonps+'/秒':'')+'</div></div>';const btn=document.createElement("button");btn.textContent="呼ぶ";btn.dataset.kind="fairy";btn.dataset.id=f.id;btn.onclick=()=>buyFairy(f.id);div.appendChild(btn);el.appendChild(div);});updateButtons();}
+function renderCraft(){const el=$("craftList");el.innerHTML="";ranks.forEach(r=>{const div=document.createElement("div");div.className="makeitem";const open=rankUnlocked(r),done=madeCount(r.id),total=rankItems(r.id).length;div.innerHTML='<div><div class="name">'+r.name+'制作 <span class="rarity">'+done+'/'+total+'</span></div><div class="price">'+(open?'ランダムで未所持サンキャッチャーを制作します。':'図鑑 '+r.unlock+' 種で解放')+'<br>必要：💎'+fmt(r.costG)+(r.costM?' / 🌙'+fmt(r.costM):'')+'</div></div>';const btn=document.createElement("button");btn.textContent=open?"制作する":"未解放";btn.dataset.kind="craft";btn.dataset.rank=r.id;btn.onclick=()=>craftRank(r.id);div.appendChild(btn);el.appendChild(div);});updateButtons();}
+function renderCollection(){const grid=$("collectionGrid");grid.innerHTML="";items.forEach(it=>{const open=!!state.made[it.id];const card=document.createElement("div");card.className="collectcard";card.onclick=()=>open&&openModal(it.id);card.innerHTML='<div class="art '+(open?'':'locked')+'">'+(open?it.icon:'？')+'</div><div class="name">'+(open?it.icon+" "+it.name:"未発見のサンキャッチャー")+'</div><div class="rarity">'+(open?it.rank.toUpperCase():"Locked")+'</div><div class="price">'+(open?it.text+"<br>能力："+it.ability:"ランダム制作で発見できます")+'</div>';grid.appendChild(card);});}
+function renderShowroom(){const box=$("showroomBox");box.querySelectorAll(".displayItem").forEach(x=>x.remove());items.filter(it=>state.made[it.id]).slice(-10).forEach((it,i)=>{const s=document.createElement("div");s.className="displayItem";s.textContent=it.icon;s.style.left=(12+(i%5)*17)+"%";s.style.top=(118+Math.floor(i/5)*92)+"px";s.onclick=()=>openModal(it.id);box.appendChild(s);});}
+function renderScene(){const sc=$("scene");sc.querySelectorAll(".fairy,.sceneItem").forEach(x=>x.remove());fairies.filter(f=>(state.fairies[f.id]||0)>0).slice(0,5).forEach((f,i)=>{const sp=document.createElement("div");sp.className="fairy";sp.textContent=f.name.split(" ")[0];sp.style.left=(12+i*16)+"%";sp.style.top=(35+(i%2)*38)+"px";sp.style.animationDelay=(-i*.7)+"s";sc.appendChild(sp);});items.filter(it=>state.made[it.id]).slice(-3).forEach((it,i)=>{const sp=document.createElement("div");sp.className="sceneItem";sp.textContent=it.icon;sp.style.left=(18+i*25)+"%";sp.style.top="230px";sp.onclick=()=>openModal(it.id);sc.appendChild(sp);});}
+function updateButtons(){document.querySelectorAll('button[data-kind="fairy"]').forEach(btn=>{const f=fairies.find(x=>x.id===btn.dataset.id);btn.disabled=state.glass<fairyCost(f);});document.querySelectorAll('button[data-kind="craft"]').forEach(btn=>{const r=ranks.find(x=>x.id===btn.dataset.rank);btn.disabled=!rankUnlocked(r)||state.glass<r.costG||state.moon<r.costM;});}
+function openModal(id){const it=items.find(x=>x.id===id);if(!it)return;$("modalIcon").textContent=it.icon;$("modalName").textContent=it.icon+" "+it.name;$("modalRarity").textContent=it.rank.toUpperCase();$("modalText").textContent=it.text;$("modalAbility").textContent="能力："+it.ability;$("modal").classList.add("show");}
+function showPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));$(id).classList.add("active");$("tab-"+id).classList.add("active");render();}
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("show"),1900);}
+function spark(text,x,y){const s=document.createElement("div");s.className="spark";s.textContent=text;s.style.left=(x-10)+"px";s.style.top=(y-20)+"px";document.body.appendChild(s);setTimeout(()=>s.remove(),760);}
+function debugInfo(){const data={version:"beta3",ua:navigator.userAgent,state,gps:gps(),moonps:moonps(),time:new Date().toISOString()};$("debugBox").value=JSON.stringify(data,null,2);if(navigator.clipboard)navigator.clipboard.writeText($("debugBox").value).then(()=>toast("コピーしました")).catch(()=>{});}
+function reset(){if(confirm("本当に初期化しますか？")){localStorage.removeItem(KEY);state=defaultState();render();toast("初期化しました");}}
+function applyTilt(x){document.documentElement.style.setProperty("--shineX",(x*2-40)+"%");}
+function requestMotion(){if(typeof DeviceOrientationEvent!=="undefined"&&typeof DeviceOrientationEvent.requestPermission==="function"){DeviceOrientationEvent.requestPermission().then(res=>{if(res==="granted"){state.motion=true;save();toast("傾きキラキラON");}}).catch(()=>toast("許可できませんでした"));}else{state.motion=true;save();toast("傾きキラキラON");}}
+window.addEventListener("deviceorientation",e=>{if(!state.motion)return;const gamma=e.gamma||0;applyTilt(Math.max(-20,Math.min(20,gamma)));});
+function bind(){$("clickBtn").onclick=collectGlass;$("quickSaveBtn").onclick=()=>{save();toast("保存しました")};$("saveBtn").onclick=()=>{save();toast("保存しました")};$("debugBtn").onclick=debugInfo;$("resetBtn").onclick=reset;$("motionBtn").onclick=requestMotion;$("closeModal").onclick=()=>$("modal").classList.remove("show");$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.remove("show");};document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));window.addEventListener("beforeunload",save);document.addEventListener("visibilitychange",()=>{if(document.hidden)save();});}
+load();bind();render();setInterval(tick,1000);setInterval(save,5000);
+})();
+</script>
+</body>
+</html>
